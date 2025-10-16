@@ -1,5 +1,5 @@
 local rt = require("rust-tools")
-local lspconfig_utils = require("lspconfig.util")
+local lspconfig_utils = vim.lsp.util
 local server_status = require("rust-tools.server_status")
 
 local M = {}
