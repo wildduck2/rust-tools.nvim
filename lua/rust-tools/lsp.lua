@@ -1,7 +1,8 @@
 local rt = require("rust-tools")
--- FIX: Re-introduce require("lspconfig") to ensure server definitions are loaded.
--- This will still show the deprecation warning, but it fixes the runtime crash.
-local lsp_config_module = require("lspconfig")
+-- FIX 1: We still need to call require("lspconfig") to load the rust_analyzer definition
+-- into Neovim's LSP configuration system, but we do not assign the deprecated
+-- return value to a local variable.
+require("lspconfig")
 local lspconfig_utils = require("lspconfig.util")
 local server_status = require("rust-tools.server_status")
 
@@ -163,9 +164,8 @@ local function setup_capabilities()
 end
 
 local function setup_lsp()
-  -- FIX: Use the loaded module to call the setup function, as the global
-  -- vim.lsp.config.servers.rust_analyzer.setup was nil.
-  lsp_config_module.rust_analyzer.setup(rt.config.options.server)
+  -- FIX 2: Use the non-deprecated, globally configured server definition's setup function.
+  vim.lsp.config.servers.rust_analyzer.setup(rt.config.options.server)
 end
 
 local function get_root_dir(filename)
