@@ -1,5 +1,4 @@
 local rt = require("rust-tools")
-local lspconfig = require("lspconfig")
 local lspconfig_utils = require("lspconfig.util")
 local server_status = require("rust-tools.server_status")
 
