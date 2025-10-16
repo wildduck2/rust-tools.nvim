@@ -1,5 +1,8 @@
 local rt = require("rust-tools")
-local lspconfig_utils = require("lspconfig.util") -- Retained for utility functions like root_pattern
+-- FIX: Re-introduce require("lspconfig") to ensure server definitions are loaded.
+-- This will still show the deprecation warning, but it fixes the runtime crash.
+local lsp_config_module = require("lspconfig")
+local lspconfig_utils = require("lspconfig.util")
 local server_status = require("rust-tools.server_status")
 
 local M = {}
@@ -160,9 +163,9 @@ local function setup_capabilities()
 end
 
 local function setup_lsp()
-  -- The deprecated 'lspconfig.rust_analyzer.setup' is replaced
-  -- with the recommended 'vim.lsp.config.servers.rust_analyzer.setup'
-  vim.lsp.config.servers.rust_analyzer.setup(rt.config.options.server)
+  -- FIX: Use the loaded module to call the setup function, as the global
+  -- vim.lsp.config.servers.rust_analyzer.setup was nil.
+  lsp_config_module.rust_analyzer.setup(rt.config.options.server)
 end
 
 local function get_root_dir(filename)
