@@ -1,5 +1,5 @@
 local rt = require("rust-tools")
-local lspconfig_utils = vim.lsp.util
+local lspconfig_utils = require("lspconfig.util") -- Retained for utility functions like root_pattern
 local server_status = require("rust-tools.server_status")
 
 local M = {}
@@ -160,7 +160,9 @@ local function setup_capabilities()
 end
 
 local function setup_lsp()
-  vim.lsp.config.rust_analyzer.setup(rt.config.options.server)
+  -- The deprecated 'lspconfig.rust_analyzer.setup' is replaced
+  -- with the recommended 'vim.lsp.config.servers.rust_analyzer.setup'
+  vim.lsp.config.servers.rust_analyzer.setup(rt.config.options.server)
 end
 
 local function get_root_dir(filename)
